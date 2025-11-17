@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Web Jotter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="popup.js" defer></script>
+</head>
+
+<body>
+  <div id="popup-container">
+
+    <!-- Header -->
+    <header class="header-section">
+      <h1 class="header">Web Jotter</h1>
+      <p class="tagline center-shadow">
+        Tabs spinning out? Jot ’em before they skitter away.
+      </p>
+      <hr class="tagline-separator" />
+
+      <!-- Settings Button -->
+      <button id="openSettingsBtn" class="spider-mascot-btn" title="Settings">
+        <div class="mascot-wrapper">
+          <div class="spider-mascot-ring">
+            <img src="spider_mascot.png" class="spider-mascot--header" alt="Settings" />
+          </div>
+        </div>
+      </button>
+    </header>
+
+    <!-- Feature Tabs -->
+    <nav class="feature-tabs" role="tablist">
+      <button class="tab tilt-btn" data-view="highlights">Highlights</button>
+      <button class="tab active tilt-btn" data-view="sessions">Sessions</button>
+    </nav>
+
+    <!-- Highlights View -->
+    <section id="view-highlights" class="view is-hidden">
+      <p class="blurb">
+        ✍️ Capture ideas and quotes. Right-click selected text to save with source link.
+      </p>
+
+      <div class="hl-input-wrap">
+        <textarea id="highlightInput" class="hl-input"
+          placeholder="Paste or type a highlight..."></textarea>
+        <div class="controls">
+          <button id="saveHighlightBtn" class="tilt-btn">Save Highlight</button>
+        </div>
+      </div>
+
+      <ul id="highlightList" class="highlight-list"></ul>
+    </section>
+
+    <!-- Sessions View -->
+    <section id="view-sessions" class="view">
+      <p class="blurb">
+        🕸 Each session is a snapshot of your open tabs. Restore, rename, or pin them for later.
+      </p>
+
+      <div class="controls">
+        <button id="saveSessionBtn" class="tilt-btn">Save Tabs as Session</button>
+      </div>
+
+      <ul id="sessionList" class="session-list"></ul>
+    </section>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="settings-modal is-hidden" role="dialog" aria-modal="true">
+      <div class="settings-modal-content">
+
+        <!-- Close button (X) -->
+        <button id="closeSettingsBtn" class="modal-close-btn tilt-btn" aria-label="Close settings">✕</button>
+
+        <h2 class="settings-modal-title">Settings</h2>
+
+        <!-- Appearance Section -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">Appearance</h3>
+          <p class="settings-subtext">
+            Choose your comic universe. Dark by default, light for daytime sleuthing.
+          </p>
+
+          <div class="theme-card-row">
+            <!-- DARK MODE CARD -->
+            <article class="theme-card theme-card--dark" data-theme="dark">
+              <div class="theme-card-mascot-wrap">
+                <img src="spider_mascot.png" class="theme-card-mascot mascot-dark" />
+                <div class="theme-card-bubble theme-card-bubble--dark">Dark Mode</div>
+              </div>
+
+              <div class="theme-card-body">
+                <h4 class="theme-card-title">Dark Mode</h4>
+                <ul class="theme-card-points">
+                  <li>Deep panels and neon vibes</li>
+                  <li>Easy on the eyes</li>
+                  <li>Perfect for late-night browsing</li>
+                </ul>
+                <p class="theme-card-quip"><em>“Night web, bright tabs.”</em></p>
+              </div>
+            </article>
+
+            <!-- LIGHT MODE CARD -->
+            <article class="theme-card theme-card--light" data-theme="light">
+              <div class="theme-card-mascot-wrap">
+                <img src="spider_mascot.png" class="spider-mascot spider-mascot--header" alt="Settings" />
+                <div class="theme-card-bubble theme-card-bubble--light">Light Mode</div>
+              </div>
+
+              <div class="theme-card-body">
+                <h4 class="theme-card-title">Light Mode</h4>
+                <ul class="theme-card-points">
+                  <li>Soft pastel layout</li>
+                  <li>Clean and airy design</li>
+                  <li>Ideal for bright screens</li>
+                </ul>
+                <p class="theme-card-quip"><em>“Day mode, same web-power.”</em></p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Shortcuts Section -->
+        <section class="settings-section">
+          <h3 class="settings-section-title">Shortcuts</h3>
+
+          <br>
+          <div class="shortcut-list">
+            <div class="shortcut-row">
+              <span class="shortcut-label">Open Web-Jotter:</span>
+              <span id="shortcut-open-webjotter" class="shortcut-value">Loading…</span>
+            </div>
+
+            <div class="shortcut-row">
+              <span class="shortcut-label">Open most recent session:</span>
+              <span id="shortcut-open-recent" class="shortcut-value">Loading…</span>
+            </div>
+          </div>
+
+          <p class="shortcuts-hint"><br>Edit shortcuts in your browser:</p>
+
+          <div class="shortcut-link-block">
+            <div class="shortcut-link-row">
+              <span class="shortcut-link-label">Chrome Shortcut Settings</span>
+              <button class="shortcut-copy-btn tilt-btn" data-copy="chrome://extensions/shortcuts">📋</button>
+            </div>
+            <code class="shortcut-copy-btn tilt-btn">chrome://extensions/shortcuts</code>
+
+            <div class="shortcut-link-row">
+              <span class="shortcut-link-label">Opera-GX Shortcut Settings</span>
+              <button class="shortcut-copy-btn" data-copy="opera://extensions/shortcuts">📋</button>
+            </div>
+            <code class="shortcut-link-text">opera://extensions/shortcuts</code>
+          </div>
+        </section>
+
+        <!-- Danger Section -->
+        <section class="settings-section danger-section">
+          <h3 class="settings-section-title">Clear Data</h3>
+          <p class="settings-warning">Choose what to permanently erase.</p>
+
+          <label class="settings-label">Type <strong>DELETE ALL</strong> to unlock full wipe:</label>
+          <input id="wipeConfirm" class="settings-input" placeholder="DELETE ALL" />
+
+          <button id="wipeDataBtn" class="danger-btn tilt-btn">Clear EVERYTHING</button>
+
+          <hr class="danger-divider"/>
+
+          <button id="wipeSessionsBtn" class="danger-btn danger-btn-soft tilt-btn">Clear Only Sessions</button>
+          <button id="wipeHighlightsBtn" class="danger-btn danger-btn-soft tilt-btn">Clear Only Highlights</button>
+        </section>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
