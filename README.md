@@ -16,7 +16,6 @@
 - [✨ Why Web Jotter Exists](#-why-web-jotter-exists)
 - [🕸️ Features](#️-features)
 - [🎨 Theme & Design Philosophy](#-theme--design-philosophy)
-- [⚙️ Installation](#️-installation)
 - [🚀 Usage Guide](#-usage-guide)
   - [Saving Highlights](#saving-highlights)
   - [Saving Sessions](#saving-sessions)
@@ -121,9 +120,104 @@ This balance is what makes the extension feel **alive but usable**.
 
 ---
 
-# ⚙️ Installation
+# 🚀 Usage Guide
 
-### Option 1 — Load as Unpacked Extension
-1. Clone the repo:  
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/Web-Jotter.git
+Saving Highlights
+
+- Open popup → type/paste → Save Highlight
+- OR right-click selected text → Add to Web Jotter Highlights
+
+Saving Sessions
+
+Click Save Tabs as Session
+
+Captures:
+- URLs
+- Page titles
+- Timestamp
+
+Manage with:
+- Restore
+- Rename
+- Pin
+- Delete
+- Remove individual tabs
+
+Settings Modal
+
+Switch themes, view shortcuts, copy shortcut links, clear data.
+
+Keyboard Shortcuts
+
+Check in Settings → “Shortcuts”
+
+Configure via:
+
+chrome://extensions/shortcuts
+
+
+# 🛠️ Tech Stack
+
+- JavaScript (ES6)
+- HTML5 + CSS3
+- Chrome Manifest V3
+- chrome.storage.local
+- chrome.tabs
+- chrome.commands
+- chrome.contextMenus
+- Google Fonts (Bangers + Mulish)
+
+
+# 📸 Screenshots
+
+None ready yet, but check back soon!
+
+---
+
+# ⛩️ Project Structure
+
+Web-Jotter/
+├── background.js
+├── manifest.json
+├── popup.html
+├── popup.js
+├── style.css
+├── spider_mascot.png
+└── README.md
+
+(Will migrate to modular `/src` architecture in future versions.)
+
+---
+
+# 🧭 Roadmap
+
+### Near-Term Improvements
+- Favicon rendering in session lists  
+- In-extension search (sessions + highlights)  
+- Convert action buttons → three-dot menus  
+- “Open Web Jotter in New Tab” full-page mode  
+- Improved spacing + layout hierarchy  
+
+### Mid-Term Goals
+- Full ES-module refactor  
+- Virtualized lists for large datasets  
+- Highlight grouping by date/domain  
+- JSON + Markdown export/import  
+
+### Long-Term Vision
+- Chrome Web Store launch  
+- OperaGX Store listing  
+- Optional cloud sync  
+
+---
+
+# 🤝 Contributors
+
+###Developer  
+**Jamal Gache**  
+---
+
+# 📜 License
+
+**MIT License** — free to use, remix, and expand.  
+Just don’t remove the spider. 🕷️
