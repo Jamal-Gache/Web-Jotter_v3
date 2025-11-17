@@ -309,9 +309,15 @@ async function renderSessions() {
     actions.className = "session-actions";
 
     const restore = btn("Restore", () => restoreSession(s.id));
-    const del = btn("Delete", () => deleteSession(s.id));
-    const ren = btn("Rename", () => renameSession(s.id));
-    const pin = btn(s.pinned ? "Unpin" : "Pin", () => togglePinSession(s.id));
+    restore.title = "Restore";
+
+    const del = btn("🗑️", () => deleteSession(s.id));
+    del.title = "Delete";
+
+    const ren = btn("✒️", () => renameSession(s.id));
+    ren.title = "Rename";
+
+    const pin = btn(s.pinned ? "📌" : "📌", () => togglePinSession(s.id));
 
     actions.append(restore, del, ren, pin);
     li.append(actions);
