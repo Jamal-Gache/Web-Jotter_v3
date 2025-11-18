@@ -173,13 +173,13 @@ None ready yet, but check back soon!
 # ⛩️ Project Structure
 
 Web-Jotter/
->├── background.js
->├── manifest.json
->├── popup.html
->├── popup.js
->├── style.css
->├── spider_mascot.png
->└── README.md
+- > ├── background.js
+- > ── manifest.json
+- > ├── popup.html
+- > ├── popup.js
+- > ├── style.css
+- > ├── spider_mascot.png
+- > └── README.md
 
 (Will migrate to modular `/src` architecture in future versions.)
 
