@@ -122,14 +122,14 @@ This balance is what makes the extension feel **alive but usable**.
 
 # 🚀 Usage Guide
 
-###Saving Highlights
+### Saving Highlights
 - Open popup → type/paste → Save Highlight
 - OR right-click selected text → Add to Web Jotter Highlights
 
 ###Saving Sessions
 Click Save Tabs as Session
 
-###Captures:
+# ### Captures:
 - URLs
 - Page titles
 - Timestamp
@@ -141,10 +141,10 @@ Manage with:
 - Delete
 - Remove individual tabs
 
-###Settings Modal
+### Settings Modal
 Switch themes, view shortcuts, copy shortcut links, clear data.
 
-###Keyboard Shortcuts
+# ### Keyboard Shortcuts
 Check in Settings → “Shortcuts”
 Configure via:
 ```bash
