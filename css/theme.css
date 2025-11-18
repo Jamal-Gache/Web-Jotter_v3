@@ -1,0 +1,68 @@
+/* theme.css */
+
+/* ===========================
+   THEME VARS + ANIMATION
+   =========================== */
+
+:root {
+  --transition-theme: 0.25s ease;
+
+  /* Dark defaults */
+  --color-bg: #1b1a1f;
+  --color-panel: #24232b;
+  --color-panel-soft: #2d2c36;
+  --color-border: #3a3944;
+  --color-border-soft: #4c4b5a;
+  --color-text: #f3f3f5;
+  --color-text-muted: #c8c7d1;
+  --color-accent: #ff6f7d;
+  --color-accent-soft: #ffbdc5;
+  --color-highlight-bg: #2f2e39;
+  --color-blurb-bg: #2a2933;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+:root.theme-light {
+  --color-bg: #f5f4f8;
+  --color-panel: #ffffff;
+  --color-panel-soft: #f5f4fa;
+  --color-border: #dcd8ee;
+  --color-border-soft: #ccc9dd;
+  --color-text: #222233;
+  --color-text-muted: #555477;
+  --color-highlight-bg: #ffffff;
+  --color-accent-soft: #ffc3d0;
+  --color-blurb-bg: #f0eef9;
+  --shadow-soft: 0 4px 8px rgba(0,0,0,0.18);
+}
+
+/* Dark Mode Theme (overall page dark mode) */
+:root.theme-dark {
+  --color-bg: #1b1a1f;
+  --color-panel: #24232b;
+  --color-panel-soft: #2d2c36;
+  --color-border: #3a3944;
+  --color-border-soft: #4c4b5a;
+  --color-text: #f3f3f5;
+  --color-text-muted: #c8c7d1;
+  --color-accent: #ff6f7d;
+  --color-accent-soft: #ffbdc5;
+  --color-highlight-bg: #2f2e39;
+  --color-blurb-bg: #2a2933;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* Light Mode Theme (overall page light mode) */
+:root.theme-light {
+  --color-bg: #f5f4f8;
+  --color-panel: #ffffff;
+  --color-panel-soft: #f5f4fa;
+  --color-border: #dcd8ee;
+  --color-border-soft: #ccc9dd;
+  --color-text: #222233;
+  --color-text-muted: #555477;
+  --color-highlight-bg: #ffffff;
+  --color-accent-soft: #ffc3d0;
+  --color-blurb-bg: #f0eef9;
+  --shadow-soft: 0 4px 8px rgba(0,0,0,0.18);
+}

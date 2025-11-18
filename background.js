@@ -1,8 +1,6 @@
 // background.js — Web-Jotter v2.0
-// Context menu (right-click highlight) + keyboard commands
-
-const STORAGE_KEY = "sessions";
-const HL_KEY = "highlights";
+import { storageGet, storageSet } from './storage.js';
+import { HL_KEY } from './highlights.js';
 
 // Create the right-click "Add to Web Jotter Highlights" option
 chrome.runtime.onInstalled.addListener(() => {
@@ -23,7 +21,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   const source = tab && tab.url ? tab.url : null;
 
-  const store = await chrome.storage.local.get(HL_KEY);
+  const store = await storageGet(HL_KEY);
   const highlights = Array.isArray(store[HL_KEY]) ? store[HL_KEY] : [];
 
   const now = Date.now();
@@ -34,7 +32,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     source
   });
 
-  await chrome.storage.local.set({ [HL_KEY]: highlights });
+  await storageSet({ [HL_KEY]: highlights });
 });
 
 // Keyboard shortcut commands
@@ -45,11 +43,10 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 
   if (command === "open_recent_session") {
-    const store = await chrome.storage.local.get(STORAGE_KEY);
+    const store = await storageGet(STORAGE_KEY);
     const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
     if (!sessions.length) return;
 
-    // Sort: pinned first, then newest
     sessions.sort((a, b) => {
       const ap = a.pinned ? 1 : 0;
       const bp = b.pinned ? 1 : 0;

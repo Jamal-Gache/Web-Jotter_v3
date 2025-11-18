@@ -1,0 +1,49 @@
+/* sessions.css */
+
+/* ===========================
+   SESSIONS
+   =========================== */
+
+.session-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  max-height: 400px;  /* Limit height to prevent overflow */
+  overflow-y: auto;   /* Allow scrolling if content overflows */
+  padding-right: 10px; /* Ensure a little spacing on the right for scrollbars */
+  border-radius: 8px;
+  border: 1px solid var(--color-border-soft);
+}
+
+/* Session Item */
+.session-item {
+  background: var(--color-panel);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  padding: 8px;
+  max-width: 100%;   /* Ensure it does not overflow horizontally */
+  width: auto;
+  overflow: hidden;  /* Prevent overflow of content */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Header Section of Session Item */
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Session Title - Ensure text doesn't overflow */
+.session-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ellipsis for long session names */
+  max-width: 85%; /* Limit width for session title */
+}

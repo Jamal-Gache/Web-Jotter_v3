@@ -1,0 +1,101 @@
+/* common.css */
+
+/* Base Styles */
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+#popup-container {
+  background: var(--color-panel-soft);
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  min-height: 100%;
+  width: 380px;  /* Add a fixed width here */
+  max-width: 100%; /* Ensure it doesn't overflow */
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-soft);
+}
+
+/* Button Styles */
+.controls button,
+.hl-actions button,
+.danger-btn,
+.danger-btn-soft,
+.tilt-btn {  /* Add .tilt-btn to the button group */
+  font-family: var(--font-body);
+  background: var(--color-accent);
+  border-radius: 8px;
+  border: 1px solid var(--color-accent);
+  color: #201013;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Tilt Button Animation */
+.tilt-btn {
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.tilt-btn:hover {
+  transform: translateY(-2px) rotate(1deg);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+.tilt-btn:active {
+  transform: scale(0.92) rotate(-1deg);
+  box-shadow: none;
+}
+
+/* Button Hover Effects */
+.controls button:hover,
+.hl-actions button:hover,
+.danger-btn:hover,
+.danger-btn-soft:hover {
+  filter: brightness(1.05);
+}
+
+/* Center Shadow (used for tagline text) */
+.center-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Subtle text shadow */
+}
+
+/* Tagline (text) styles */
+.tagline {
+  font-size: 0.85rem;
+  margin: 0;
+  color: var(--color-text-muted); /* Ensure muted text color */
+}
+
+/* =========================== 
+   GENERAL LAYOUT 
+=========================== */
+
+/* Default layout */
+#popup-container {
+  background: var(--color-panel-soft);
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  min-height: 100%;
+  width: 380px; /* Fixed width for popup */
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-soft);
+}
+
+/* .tagline and .center-shadow together for proper tagline rendering */
+.tagline {
+  font-size: 0.85rem;
+  margin: 0;
+  color: var(--color-text-muted); /* Light color for muted text */
+}
+
+.center-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Adds shadow to tagline */
+}
+

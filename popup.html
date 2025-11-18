@@ -3,9 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <title>Web Jotter</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/header.css" />
+  <link rel="stylesheet" href="css/sessions.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  
   <script src="popup.js" defer></script>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Mulish:ital,wght@0,400;0,500;1,400;1,500&display=swap">
 </head>
 
 <body>
@@ -23,7 +31,7 @@
       <button id="openSettingsBtn" class="spider-mascot-btn" title="Settings">
         <div class="mascot-wrapper">
           <div class="spider-mascot-ring">
-            <img src="spider_mascot.png" class="spider-mascot--header" alt="Settings" />
+            <img src="assets/spider_mascot.png" class="spider-mascot--header" alt="Settings" />
           </div>
         </div>
       </button>
@@ -74,51 +82,51 @@
 
         <h2 class="settings-modal-title">Settings</h2>
 
-        <!-- Appearance Section -->
-        <section class="settings-section">
-          <h3 class="settings-section-title">Appearance</h3>
-          <p class="settings-subtext">
-            Choose your comic universe. Dark by default, light for daytime sleuthing.
-          </p>
+      <!-- Appearance Section -->
+      <section class="settings-section">
+        <h3 class="settings-section-title">Appearance</h3>
+        <p class="settings-subtext">
+          Choose your comic universe. Dark by default, light for daytime sleuthing.
+        </p>
 
-          <div class="theme-card-row">
-            <!-- DARK MODE CARD -->
-            <article class="theme-card theme-card--dark" data-theme="dark">
-              <div class="theme-card-mascot-wrap">
-                <img src="spider_mascot.png" class="theme-card-mascot mascot-dark" />
-                <div class="theme-card-bubble theme-card-bubble--dark">Dark Mode</div>
-              </div>
+        <div class="theme-card-row">
+          <!-- DARK MODE CARD -->
+          <article class="theme-card theme-card--dark" data-theme="dark">
+            <div class="theme-card-mascot-wrap">
+              <img src="/assets/spider_mascot.png" class="theme-card-mascot mascot-dark" />
+              <div class="theme-card-bubble theme-card-bubble--dark">Dark Mode</div>
+            </div>
 
-              <div class="theme-card-body">
-                <h4 class="theme-card-title">Dark Mode</h4>
-                <ul class="theme-card-points">
-                  <li>Deep panels and neon vibes</li>
-                  <li>Easy on the eyes</li>
-                  <li>Perfect for late-night browsing</li>
-                </ul>
-                <p class="theme-card-quip"><em>“Night web, bright tabs.”</em></p>
-              </div>
-            </article>
+            <div class="theme-card-body">
+              <h4 class="theme-card-title">Dark Mode</h4>
+              <ul class="theme-card-points">
+                <li>Deep panels and neon vibes</li>
+                <li>Easy on the eyes</li>
+                <li>Perfect for late-night browsing</li>
+              </ul>
+              <p class="theme-card-quip"><em>“Night web, bright tabs.”</em></p>
+            </div>
+          </article>
 
-            <!-- LIGHT MODE CARD -->
-            <article class="theme-card theme-card--light" data-theme="light">
-              <div class="theme-card-mascot-wrap">
-                <img src="spider_mascot.png" class="spider-mascot spider-mascot--header" alt="Settings" />
-                <div class="theme-card-bubble theme-card-bubble--light">Light Mode</div>
-              </div>
+          <!-- LIGHT MODE CARD -->
+          <article class="theme-card theme-card--light" data-theme="light">
+            <div class="theme-card-mascot-wrap">
+              <img src="/assets/spider_mascot.png" class="spider-mascot spider-mascot--header" alt="Settings" />
+              <div class="theme-card-bubble theme-card-bubble--light">Light Mode</div>
+            </div>
 
-              <div class="theme-card-body">
-                <h4 class="theme-card-title">Light Mode</h4>
-                <ul class="theme-card-points">
-                  <li>Soft pastel layout</li>
-                  <li>Clean and airy design</li>
-                  <li>Ideal for bright screens</li>
-                </ul>
-                <p class="theme-card-quip"><em>“Day mode, same web-power.”</em></p>
-              </div>
-            </article>
-          </div>
-        </section>
+            <div class="theme-card-body">
+              <h4 class="theme-card-title">Light Mode</h4>
+              <ul class="theme-card-points">
+                <li>Soft pastel layout</li>
+                <li>Clean and airy design</li>
+                <li>Ideal for bright screens</li>
+              </ul>
+              <p class="theme-card-quip"><em>“Day mode, same web-power.”</em></p>
+            </div>
+          </article>
+        </div>
+      </section>
 
         <!-- Shortcuts Section -->
         <section class="settings-section">

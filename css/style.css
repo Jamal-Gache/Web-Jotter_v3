@@ -273,7 +273,6 @@ body {
 }
 
 .controls button,
-.session-actions button,
 .hl-actions button,
 .danger-btn,
 .danger-btn-soft {
@@ -288,7 +287,6 @@ body {
 }
 
 .controls button:hover,
-.session-actions button:hover,
 .hl-actions button:hover,
 .danger-btn:hover,
 .danger-btn-soft:hover {
@@ -376,20 +374,71 @@ body {
   padding: 0;
   display: grid;
   gap: 6px;
-  font-size: 0.85rem;
+  max-height: 400px;  /* Limit height to prevent overflow */
+  overflow-y: auto;   /* Allow scrolling if content overflows */
+  padding-right: 10px; /* Ensure a little spacing on the right for scrollbars */
+  border-radius: 8px;
+  border: 1px solid var(--color-border-soft);
 }
 
+/* Session Item */
 .session-item {
   background: var(--color-panel);
   border-radius: 8px;
   border: 1px solid var(--color-border);
   padding: 8px;
+  max-width: 100%;   /* Ensure it does not overflow horizontally */
+  width: auto;
+  overflow: hidden;  /* Prevent overflow of content */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
+/* Header Section of Session Item */
 .session-header {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
   align-items: center;
+  gap: 8px;
+}
+
+/* Session Title - Ensure text doesn't overflow */
+.session-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Show ellipsis for long session names */
+  max-width: 85%; /* Limit width for session title */
+}
+
+/* Actions Section */
+.session-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;  /* Allow buttons to wrap if necessary */
+  flex-direction: row;  /* Ensure buttons are aligned horizontally */
+}
+
+/* Button Styles - Ensure buttons are vertically aligned */
+.session-actions button {
+  width: auto;  /* Limit max-width of buttons to ensure they're not too large */
+  margin: 2px 0;  /* Ensure spacing between buttons */
+  padding: 8px 20px;  /* Add padding for proper button size */
+  text-align: center;  /* Ensure text is centered within buttons */
+  background: var(--color-accent);  /* Accent color for buttons */
+  border-radius: 8px;
+  border: 1px solid var(--color-accent);
+  color: #201013;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Adjust for hovering state */
+.session-actions button:hover {
+  filter: brightness(1.1);
 }
 
 .session-toggle {
@@ -402,20 +451,8 @@ body {
   cursor: pointer;
 }
 
-.session-title {
-  flex: 1;
-}
-
 .session-title small {
   color: var(--color-text-muted);
-}
-
-.session-actions {
-  display: flex;
-  gap: 4px;
-  justify-content: center;
-  margin-top: 4px;
-  flex-wrap: wrap;
 }
 
 /* tabs inside a session */
@@ -426,6 +463,8 @@ body {
   padding: 0;
   display: grid;
   gap: 4px;
+  max-height: 200px;  /* Limit tab list height */
+  overflow-y: auto;   /* Allow vertical scroll */
 }
 
 .tab-list.is-collapsed {
@@ -436,6 +475,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 }
 
 .tab-title {
@@ -444,6 +484,7 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-right: 6px;
+  max-width: 85%; 
 }
 
 .tab-delete {
@@ -466,6 +507,8 @@ body {
 /* keep expanded after actions */
 .session-item.expanded .tab-list {
   display: grid !important;
+  max-height: none; /* Remove the height limit */
+  overflow: visible; /* Make sure content is fully visible */
 }
 
 /* ===========================
@@ -545,17 +588,47 @@ body {
 
 .theme-card-row {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
+  grid-template-columns: 1fr 1fr;;
+  gap: 16px;
 }
 
 .theme-card {
-  border: 1px solid var(--color-border);
-  background: var(--color-panel);
   border-radius: 12px;
   padding: 8px;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+/* ==========================
+   FIXED LIGHT AND DARK MODE STYLES
+   ========================== */
+
+/* Dark mode card styling (always stays dark) */
+.theme-card--dark {
+  background: #24232b !important; /* Dark background (always) */
+  color: #f3f3f5 !important; /* Light text (always) */
+  border: 1px solid #3a3944 !important; /* Dark border (always) */
+}
+.theme-card--dark .theme-card-mascot {
+  filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.65)); /* Dark mode filter for mascot */
+}
+.theme-card--dark .theme-card-bubble--dark {
+  background: #11111a; /* Dark bubble background */
+  color: #ffcfdf; /* Light bubble text */
+}
+
+/* Light mode card styling (always stays light) */
+.theme-card--light {
+  background: #ffffff !important; /* Light background (always) */
+  color: #222233 !important; /* Dark text (always) */
+  border: 1px solid #dcd8ee !important; /* Light border (always) */
+}
+.theme-card--light .theme-card-mascot {
+  filter: invert(0.15) hue-rotate(185deg) brightness(1.2) drop-shadow(0 0 6px rgba(255,120,145,0.35)); /* Light mode filter for mascot */
+}
+.theme-card--light .theme-card-bubble--light {
+  background: #ffe4ec; /* Light bubble background */
+  color: #321118; /* Dark bubble text */
 }
 
 .theme-card:hover {
@@ -760,4 +833,40 @@ body {
   background: transparent;
   color: #ff6b6b;
   border-color: #c73838;
+}
+
+
+/* ==========================
+   OVERRIDE LIGHT AND DARK CARDS IN GLOBAL THEMES
+   ========================== */
+
+/* Dark Mode Theme (overall page dark mode) */
+:root.theme-dark {
+  --color-bg: #1b1a1f;
+  --color-panel: #24232b;
+  --color-panel-soft: #2d2c36;
+  --color-border: #3a3944;
+  --color-border-soft: #4c4b5a;
+  --color-text: #f3f3f5;
+  --color-text-muted: #c8c7d1;
+  --color-accent: #ff6f7d;
+  --color-accent-soft: #ffbdc5;
+  --color-highlight-bg: #2f2e39;
+  --color-blurb-bg: #2a2933;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* Light Mode Theme (overall page light mode) */
+:root.theme-light {
+  --color-bg: #f5f4f8;
+  --color-panel: #ffffff;
+  --color-panel-soft: #f5f4fa;
+  --color-border: #dcd8ee;
+  --color-border-soft: #ccc9dd;
+  --color-text: #222233;
+  --color-text-muted: #555477;
+  --color-highlight-bg: #ffffff;
+  --color-accent-soft: #ffc3d0;
+  --color-blurb-bg: #f0eef9;
+  --shadow-soft: 0 4px 8px rgba(0,0,0,0.18);
 }
