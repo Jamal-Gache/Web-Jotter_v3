@@ -1,10 +1,12 @@
 // popup.js v2.2 — refined UX + themes + stable UI
 
 // Import required functions
-import { saveSession, renderSessions } from './sessions.js';
-import { saveHighlight, renderHighlights } from './highlights.js';
-import { applyTheme } from './theme.js';
-import { storageGet, storageSet } from './storage.js';
+import { saveSession, renderSessions } from './js/sessions.js';
+import { saveHighlight, renderHighlights } from './js/highlights.js';
+import { applyTheme, markActiveThemeCard, setupThemeCardClicks } from './js/theme.js';
+import { storageGet, storageSet, storageClear } from './js/storage.js';
+import { STORAGE_KEY } from './js/sessions.js';
+import { HL_KEY } from './js/highlights.js';
 
 const ACTIVE_VIEW_KEY = "active_view";
 const THEME_KEY = "theme";
@@ -44,31 +46,106 @@ async function init(initialTheme) {
   setView(lastView);
 }
 
-// ===== Theme Logic =====
-function applyTheme(theme) {
-  document.documentElement.classList.remove("theme-dark", "theme-light");
-  if (theme === "light") {
-    document.documentElement.classList.add("theme-light");
-  } else {
-    document.documentElement.classList.add("theme-dark");
+// ===== Settings Modal =====
+function setupSettingsModal() {
+  const openBtn = document.getElementById("openSettingsBtn");
+  const closeBtn = document.getElementById("closeSettingsBtn");
+  const modal = document.getElementById("settingsModal");
+
+  if (openBtn && modal) {
+    openBtn.addEventListener("click", () => {
+      modal.classList.remove("is-hidden");
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener("click", () => {
+      modal.classList.add("is-hidden");
+    });
+  }
+
+  // Close modal when clicking outside
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.add("is-hidden");
+      }
+    });
   }
 }
 
-function markActiveThemeCard(theme) {
-  document.querySelectorAll(".theme-card").forEach((card) => {
-    card.classList.toggle("theme-card--active", card.dataset.theme === theme);
+// ===== Shortcut Display =====
+async function loadShortcutDisplay() {
+  const commands = await chrome.commands.getAll();
+  const openCmd = commands.find((c) => c.name === "open_webjotter");
+  const recentCmd = commands.find((c) => c.name === "open_recent_session");
+
+  const openEl = document.getElementById("shortcut-open-webjotter");
+  const recentEl = document.getElementById("shortcut-open-recent");
+
+  if (openEl && openCmd) {
+    openEl.textContent = openCmd.shortcut || "Not set";
+  }
+  if (recentEl && recentCmd) {
+    recentEl.textContent = recentCmd.shortcut || "Not set";
+  }
+}
+
+// ===== Copy Buttons =====
+function setupCopyButtons() {
+  document.querySelectorAll("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.copy;
+      if (text) {
+        await navigator.clipboard.writeText(text);
+        const originalText = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 1000);
+      }
+    });
   });
 }
 
-function setupThemeCardClicks() {
-  document.querySelectorAll(".theme-card").forEach((card) => {
-    card.addEventListener("click", async () => {
-      const t = card.dataset.theme || "dark";
-      applyTheme(t);
-      markActiveThemeCard(t);
-      await storageSet({ [THEME_KEY]: t });
+// ===== Wipe Buttons =====
+function setupWipeButtons() {
+  const wipeAllBtn = document.getElementById("wipeDataBtn");
+  const wipeSessionsBtn = document.getElementById("wipeSessionsBtn");
+  const wipeHighlightsBtn = document.getElementById("wipeHighlightsBtn");
+  const confirmInput = document.getElementById("wipeConfirm");
+
+  if (wipeAllBtn && confirmInput) {
+    wipeAllBtn.addEventListener("click", async () => {
+      if (confirmInput.value.trim() === "DELETE ALL") {
+        await storageClear();
+        confirmInput.value = "";
+        await renderSessions();
+        await renderHighlights();
+        alert("All data cleared!");
+      } else {
+        alert('Please type "DELETE ALL" to confirm.');
+      }
     });
-  });
+  }
+
+  if (wipeSessionsBtn) {
+    wipeSessionsBtn.addEventListener("click", async () => {
+      if (confirm("Clear all sessions? This cannot be undone.")) {
+        await storageSet({ [STORAGE_KEY]: [] });
+        await renderSessions();
+      }
+    });
+  }
+
+  if (wipeHighlightsBtn) {
+    wipeHighlightsBtn.addEventListener("click", async () => {
+      if (confirm("Clear all highlights? This cannot be undone.")) {
+        await storageSet({ [HL_KEY]: [] });
+        await renderHighlights();
+      }
+    });
+  }
 }
 
 // ===== View Switching =====

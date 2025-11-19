@@ -1,5 +1,26 @@
 // sessions.js
-const STORAGE_KEY = "sessions";
+import { storageGet, storageSet } from './storage.js';
+
+export const STORAGE_KEY = "sessions";
+
+// Helper function to query tabs
+function tabsQuery(query) {
+  return new Promise((resolve) => {
+    chrome.tabs.query(query, resolve);
+  });
+}
+
+// Track expanded sessions
+const openSessions = new Set();
+
+// Helper function to create buttons
+function btn(text, onClick) {
+  const button = document.createElement("button");
+  button.textContent = text;
+  button.onclick = onClick;
+  button.classList.add("tilt-btn");
+  return button;
+}
 
 export async function saveSession() {
   const tabs = await tabsQuery({ currentWindow: true });
@@ -113,5 +134,67 @@ export async function renderSessions() {
     li.append(tabList);
     list.append(li);
   }
+}
+
+// Restore a session by opening all its tabs
+async function restoreSession(id) {
+  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const session = sessions.find((s) => s.id === id);
+  if (!session || !Array.isArray(session.urls)) return;
+
+  for (const entry of session.urls) {
+    const url = entry && entry.url ? entry.url : null;
+    if (url) {
+      chrome.tabs.create({ url });
+    }
+  }
+}
+
+// Delete a session
+async function deleteSession(id) {
+  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const filtered = sessions.filter((s) => s.id !== id);
+  await storageSet({ [STORAGE_KEY]: filtered });
+  await renderSessions();
+}
+
+// Rename a session
+async function renameSession(id) {
+  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const session = sessions.find((s) => s.id === id);
+  if (!session) return;
+
+  const newName = prompt("Enter new session name:", session.name);
+  if (!newName || newName.trim() === "") return;
+
+  const updated = sessions.map((s) =>
+    s.id === id ? { ...s, name: newName.trim() } : s
+  );
+  await storageSet({ [STORAGE_KEY]: updated });
+  await renderSessions();
+}
+
+// Toggle pin status of a session
+async function togglePinSession(id) {
+  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const updated = sessions.map((s) =>
+    s.id === id ? { ...s, pinned: !s.pinned } : s
+  );
+  await storageSet({ [STORAGE_KEY]: updated });
+  await renderSessions();
+}
+
+// Remove a tab from a session
+async function removeTabFromSession(sessionId, tabIndex) {
+  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const session = sessions.find((s) => s.id === sessionId);
+  if (!session || !Array.isArray(session.urls)) return;
+
+  const updatedUrls = session.urls.filter((_, i) => i !== tabIndex);
+  const updated = sessions.map((s) =>
+    s.id === sessionId ? { ...s, urls: updatedUrls } : s
+  );
+  await storageSet({ [STORAGE_KEY]: updated });
+  await renderSessions();
 }
 

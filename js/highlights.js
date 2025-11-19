@@ -1,5 +1,7 @@
 // highlights.js
-const HL_KEY = "highlights";
+import { storageGet, storageSet } from './storage.js';
+
+export const HL_KEY = "highlights";
 
 export async function saveHighlight() {
   const input = document.getElementById("highlightInput");
@@ -79,5 +81,13 @@ export async function renderHighlights() {
 
     list.append(li);
   }
+}
+
+// Delete a highlight
+async function deleteHighlight(id) {
+  const { highlights = [] } = await storageGet(HL_KEY);
+  const filtered = highlights.filter((h) => h.id !== id);
+  await storageSet({ [HL_KEY]: filtered });
+  await renderHighlights();
 }
 

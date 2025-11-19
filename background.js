@@ -1,6 +1,7 @@
 // background.js — Web-Jotter v2.0
-import { storageGet, storageSet } from './storage.js';
-import { HL_KEY } from './highlights.js';
+import { storageGet, storageSet } from './js/storage.js';
+import { HL_KEY } from './js/highlights.js';
+import { STORAGE_KEY } from './js/sessions.js';
 
 // Create the right-click "Add to Web Jotter Highlights" option
 chrome.runtime.onInstalled.addListener(() => {

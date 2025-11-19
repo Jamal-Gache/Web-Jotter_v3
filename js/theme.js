@@ -1,4 +1,5 @@
 // theme.js
+import { storageSet } from './storage.js';
 
 const THEME_KEY = "theme";
 
