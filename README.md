@@ -2,7 +2,7 @@
 ### _Your Browser’s Friendly Neighborhood Tab-Slinger_
 
 <p align="center">
-  <img src="spider_mascot.png" width="110" alt="Web Jotter Spider Mascot">
+  <img src="assets/spider_mascot.png" width="110" alt="Web Jotter Spider Mascot">
 </p>
 
 <p align="center">
@@ -27,6 +27,8 @@
 - [🧭 Roadmap](#-roadmap)
 - [🤝 Contributors](#-contributors)
 - [📜 License](#-license)
+- [📘 Privacy Policy](#-privacy-policy)
+
 
 ---
 
@@ -213,3 +215,9 @@ Web-Jotter/
 
 **MIT License** — free to use, remix, and expand.  
 Just don’t remove the spider. 🕷️
+
+---
+## 📘 Privacy Policy
+See the full policy here:  
+**[PRIVACY_POLICY.md](privacy.md)**
+
