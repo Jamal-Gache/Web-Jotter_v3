@@ -13,13 +13,15 @@ function tabsQuery(query) {
 // Track expanded sessions
 const openSessions = new Set();
 
-// Helper function to create buttons
-function btn(text, onClick) {
-  const button = document.createElement("button");
-  button.textContent = text;
-  button.onclick = onClick;
-  button.classList.add("tilt-btn");
-  return button;
+// Helper function to create comic speech bubble buttons
+function createActionBubble(text, fullName, onClick) {
+  const bubble = document.createElement("button");
+  bubble.className = "action-bubble tilt-btn";
+  bubble.textContent = text;
+  bubble.title = fullName; // Tooltip on hover
+  bubble.setAttribute("aria-label", fullName);
+  bubble.onclick = onClick;
+  return bubble;
 }
 
 export async function saveSession() {
@@ -102,47 +104,43 @@ export async function renderSessions() {
     header.append(toggle, t);
     li.append(header);
 
-    /* Actions */
+    /* Actions - Comic Speech Bubbles */
     const actions = document.createElement("div");
     actions.className = "session-actions";
 
-    const restore = btn("Restore", async () => {
+    const restore = createActionBubble("Go!", "Restore", async () => {
       try {
         await restoreSession(s.id);
       } catch (err) {
         console.error("[Web-Jotter] Error restoring session:", err);
       }
     });
-    restore.title = "Restore";
 
-    const del = btn("🗑️", async () => {
+    const del = createActionBubble("Zap!", "Delete", async () => {
       try {
         await deleteSession(s.id);
       } catch (err) {
         console.error("[Web-Jotter] Error deleting session:", err);
       }
     });
-    del.title = "Delete";
 
-    const ren = btn("✒️", async () => {
+    const ren = createActionBubble("Edit!", "Rename", async () => {
       try {
         await renameSession(s.id);
       } catch (err) {
         console.error("[Web-Jotter] Error renaming session:", err);
       }
     });
-    ren.title = "Rename";
 
-    const pin = btn(s.pinned ? "📌" : "📍", async () => {
+    const pin = createActionBubble(s.pinned ? "Pin!" : "Pin!", s.pinned ? "Unpin" : "Pin", async () => {
       try {
         await togglePinSession(s.id);
       } catch (err) {
         console.error("[Web-Jotter] Error toggling pin:", err);
       }
     });
-    pin.title = s.pinned ? "Unpin" : "Pin";
 
-    actions.append(restore, del, ren, pin);
+    actions.append(restore, ren, pin, del);
     li.append(actions);
 
     /* Tab list */
@@ -245,4 +243,3 @@ async function removeTabFromSession(sessionId, tabIndex) {
   await storageSet({ [STORAGE_KEY]: updated });
   await renderSessions();
 }
-
