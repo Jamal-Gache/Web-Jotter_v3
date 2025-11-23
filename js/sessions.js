@@ -23,22 +23,33 @@ function btn(text, onClick) {
 }
 
 export async function saveSession() {
-  const tabs = await tabsQuery({ currentWindow: true });
-  const urls = tabs.map((t) => ({
-    url: t.url,
-    title: t.title || t.url,
-  }));
+  try {
+    const tabs = await tabsQuery({ currentWindow: true });
+    if (!tabs || tabs.length === 0) {
+      alert("No tabs to save!");
+      return;
+    }
 
-  const now = Date.now();
-  const name = `Session ${new Date(now).toLocaleString()}`;
+    const urls = tabs.map((t) => ({
+      url: t.url,
+      title: t.title || t.url,
+    }));
 
-  let { sessions = [] } = await storageGet(STORAGE_KEY);
+    const now = Date.now();
+    const name = `Session ${new Date(now).toLocaleString()}`;
 
-  sessions.unshift({ id: now, name, urls, createdAt: now, pinned: false });
-  sessions = sortSessions(sessions);
+    const store = await storageGet(STORAGE_KEY);
+    const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
 
-  await storageSet({ [STORAGE_KEY]: sessions });
-  await renderSessions();
+    sessions.unshift({ id: now, name, urls, createdAt: now, pinned: false });
+    const sorted = sortSessions(sessions);
+
+    await storageSet({ [STORAGE_KEY]: sorted });
+    await renderSessions();
+  } catch (err) {
+    console.error("[Web-Jotter] Error in saveSession:", err);
+    throw err;
+  }
 }
 
 function sortSessions(arr) {
@@ -52,17 +63,18 @@ export async function renderSessions() {
   const list = document.getElementById("sessionList");
   if (!list) return;
 
-  let { sessions = [] } = await storageGet(STORAGE_KEY);
+  const store = await storageGet(STORAGE_KEY);
+  const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
   list.innerHTML = "";
 
-  sessions = sortSessions(sessions);
+  const sorted = sortSessions(sessions);
 
-  if (!sessions.length) {
+  if (!sorted.length) {
     list.innerHTML = `<li class="session-item"><em>No sessions saved yet.</em></li>`;
     return;
   }
 
-  for (const s of sessions) {
+  for (const s of sorted) {
     const li = document.createElement("li");
     li.className = "session-item";
     if (openSessions.has(s.id)) li.classList.add("expanded");
@@ -81,10 +93,10 @@ export async function renderSessions() {
       s.urls.length
     } tabs • ${new Date(s.createdAt).toLocaleString()}</small>`;
 
-    toggle.onclick = () => {
+    toggle.onclick = async () => {
       if (openSessions.has(s.id)) openSessions.delete(s.id);
       else openSessions.add(s.id);
-      renderSessions();
+      await renderSessions();
     };
 
     header.append(toggle, t);
@@ -94,16 +106,41 @@ export async function renderSessions() {
     const actions = document.createElement("div");
     actions.className = "session-actions";
 
-    const restore = btn("Restore", () => restoreSession(s.id));
+    const restore = btn("Restore", async () => {
+      try {
+        await restoreSession(s.id);
+      } catch (err) {
+        console.error("[Web-Jotter] Error restoring session:", err);
+      }
+    });
     restore.title = "Restore";
 
-    const del = btn("🗑️", () => deleteSession(s.id));
+    const del = btn("🗑️", async () => {
+      try {
+        await deleteSession(s.id);
+      } catch (err) {
+        console.error("[Web-Jotter] Error deleting session:", err);
+      }
+    });
     del.title = "Delete";
 
-    const ren = btn("✒️", () => renameSession(s.id));
+    const ren = btn("✒️", async () => {
+      try {
+        await renameSession(s.id);
+      } catch (err) {
+        console.error("[Web-Jotter] Error renaming session:", err);
+      }
+    });
     ren.title = "Rename";
 
-    const pin = btn(s.pinned ? "📌" : "📌", () => togglePinSession(s.id));
+    const pin = btn(s.pinned ? "📌" : "📍", async () => {
+      try {
+        await togglePinSession(s.id);
+      } catch (err) {
+        console.error("[Web-Jotter] Error toggling pin:", err);
+      }
+    });
+    pin.title = s.pinned ? "Unpin" : "Pin";
 
     actions.append(restore, del, ren, pin);
     li.append(actions);
@@ -125,7 +162,13 @@ export async function renderSessions() {
       const x = document.createElement("button");
       x.className = "tab-delete";
       x.textContent = "×";
-      x.onclick = () => removeTabFromSession(s.id, i);
+      x.onclick = async () => {
+        try {
+          await removeTabFromSession(s.id, i);
+        } catch (err) {
+          console.error("[Web-Jotter] Error removing tab:", err);
+        }
+      };
       x.classList.add("tilt-btn");
       row.append(title, x);
       tabList.append(row);
@@ -138,7 +181,8 @@ export async function renderSessions() {
 
 // Restore a session by opening all its tabs
 async function restoreSession(id) {
-  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const store = await storageGet(STORAGE_KEY);
+  const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
   const session = sessions.find((s) => s.id === id);
   if (!session || !Array.isArray(session.urls)) return;
 
@@ -152,7 +196,8 @@ async function restoreSession(id) {
 
 // Delete a session
 async function deleteSession(id) {
-  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const store = await storageGet(STORAGE_KEY);
+  const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
   const filtered = sessions.filter((s) => s.id !== id);
   await storageSet({ [STORAGE_KEY]: filtered });
   await renderSessions();
@@ -160,7 +205,8 @@ async function deleteSession(id) {
 
 // Rename a session
 async function renameSession(id) {
-  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const store = await storageGet(STORAGE_KEY);
+  const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
   const session = sessions.find((s) => s.id === id);
   if (!session) return;
 
@@ -176,7 +222,8 @@ async function renameSession(id) {
 
 // Toggle pin status of a session
 async function togglePinSession(id) {
-  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const store = await storageGet(STORAGE_KEY);
+  const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
   const updated = sessions.map((s) =>
     s.id === id ? { ...s, pinned: !s.pinned } : s
   );
@@ -186,7 +233,8 @@ async function togglePinSession(id) {
 
 // Remove a tab from a session
 async function removeTabFromSession(sessionId, tabIndex) {
-  const { sessions = [] } = await storageGet(STORAGE_KEY);
+  const store = await storageGet(STORAGE_KEY);
+  const sessions = Array.isArray(store[STORAGE_KEY]) ? store[STORAGE_KEY] : [];
   const session = sessions.find((s) => s.id === sessionId);
   if (!session || !Array.isArray(session.urls)) return;
 

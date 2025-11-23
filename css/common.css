@@ -1,6 +1,23 @@
-/* common.css */
+/* common.css - Base styles, dimensions, layout, and common components */
 
-/* Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Mulish:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+/* ===========================
+   POPUP DIMENSIONS
+   =========================== */
+
+html, body {
+  width: 380px !important;
+  min-width: 360px !important;
+  max-width: 430px !important;
+  min-height: 520px !important;
+  overflow-x: hidden !important;
+}
+
+/* ===========================
+   GENERAL LAYOUT
+   =========================== */
+
 body {
   margin: 0;
   background: var(--color-bg);
@@ -13,19 +30,74 @@ body {
   border: 2px solid var(--color-border);
   border-radius: 10px;
   min-height: 100%;
-  width: 380px;  /* Add a fixed width here */
-  max-width: 100%; /* Ensure it doesn't overflow */
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-soft);
 }
 
-/* Button Styles */
+/* ===========================
+   VIEWS + BLURB
+   =========================== */
+
+.view {
+  padding: 4px 8px 10px;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.blurb {
+  background: var(--color-blurb-bg);
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin: 4px 0 8px;
+}
+
+/* ===========================
+   FEATURE TABS
+   =========================== */
+
+.feature-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
+}
+
+.feature-tabs .tab {
+  background: var(--color-panel);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 6px 10px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.feature-tabs .tab.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #1c1416;
+}
+
+/* ===========================
+   CONTROLS + BUTTONS
+   =========================== */
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin: 6px 0 10px;
+}
+
 .controls button,
 .hl-actions button,
 .danger-btn,
-.danger-btn-soft,
-.tilt-btn {  /* Add .tilt-btn to the button group */
+.danger-btn-soft {
   font-family: var(--font-body);
   background: var(--color-accent);
   border-radius: 8px;
@@ -36,7 +108,17 @@ body {
   cursor: pointer;
 }
 
-/* Tilt Button Animation */
+.controls button:hover,
+.hl-actions button:hover,
+.danger-btn:hover,
+.danger-btn-soft:hover {
+  filter: brightness(1.05);
+}
+
+/* ================================
+   GLOBAL TILT EFFECT FOR BUTTONS
+   ================================ */
+
 .tilt-btn {
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
@@ -51,51 +133,73 @@ body {
   box-shadow: none;
 }
 
-/* Button Hover Effects */
-.controls button:hover,
-.hl-actions button:hover,
-.danger-btn:hover,
-.danger-btn-soft:hover {
-  filter: brightness(1.05);
+/* ===========================
+   HIGHLIGHTS
+   =========================== */
+
+.hl-input-wrap {
+  margin-top: 2px;
 }
 
-/* Center Shadow (used for tagline text) */
-.center-shadow {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Subtle text shadow */
-}
-
-/* Tagline (text) styles */
-.tagline {
+.hl-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--color-highlight-bg);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 8px;
+  color: var(--color-text);
+  padding: 8px;
+  min-height: 70px;
+  resize: vertical;
+  font-family: var(--font-body);
   font-size: 0.85rem;
-  margin: 0;
-  color: var(--color-text-muted); /* Ensure muted text color */
 }
 
-/* =========================== 
-   GENERAL LAYOUT 
-=========================== */
+.highlight-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
 
-/* Default layout */
-#popup-container {
-  background: var(--color-panel-soft);
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  min-height: 100%;
-  width: 380px; /* Fixed width for popup */
-  max-width: 100%;
+.hl-item {
+  background: var(--color-panel);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  padding: 8px;
+  font-size: 0.85rem;
+}
+
+.hl-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.hl-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.hl-actions {
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-soft);
+  gap: 4px;
 }
 
-/* .tagline and .center-shadow together for proper tagline rendering */
-.tagline {
-  font-size: 0.85rem;
-  margin: 0;
-  color: var(--color-text-muted); /* Light color for muted text */
+.hl-meta {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
 }
 
-.center-shadow {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Adds shadow to tagline */
+.hl-meta a {
+  color: var(--color-accent);
+  text-decoration: none;
 }
 
+.hl-meta a:hover {
+  text-decoration: underline;
+}

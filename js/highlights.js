@@ -4,27 +4,40 @@ import { storageGet, storageSet } from './storage.js';
 export const HL_KEY = "highlights";
 
 export async function saveHighlight() {
-  const input = document.getElementById("highlightInput");
-  if (!input) return;
+  try {
+    const input = document.getElementById("highlightInput");
+    if (!input) {
+      console.error("[Web-Jotter] highlightInput element not found");
+      return;
+    }
 
-  const text = (input.value || "").trim();
-  if (!text) return;
+    const text = (input.value || "").trim();
+    if (!text) {
+      alert("Please enter some text to save as a highlight.");
+      return;
+    }
 
-  const { highlights = [] } = await storageGet(HL_KEY);
-  const now = Date.now();
+    const store = await storageGet(HL_KEY);
+    const highlights = Array.isArray(store[HL_KEY]) ? store[HL_KEY] : [];
+    const now = Date.now();
 
-  highlights.unshift({ id: now, text, createdAt: now, source: null });
-  await storageSet({ [HL_KEY]: highlights });
+    highlights.unshift({ id: now, text, createdAt: now, source: null });
+    await storageSet({ [HL_KEY]: highlights });
 
-  input.value = "";
-  await renderHighlights();
+    input.value = "";
+    await renderHighlights();
+  } catch (err) {
+    console.error("[Web-Jotter] Error in saveHighlight:", err);
+    throw err;
+  }
 }
 
 export async function renderHighlights() {
   const list = document.getElementById("highlightList");
   if (!list) return;
 
-  const { highlights = [] } = await storageGet(HL_KEY);
+  const store = await storageGet(HL_KEY);
+  const highlights = Array.isArray(store[HL_KEY]) ? store[HL_KEY] : [];
   list.innerHTML = "";
 
   if (!highlights.length) {
@@ -57,7 +70,13 @@ export async function renderHighlights() {
 
     const del = document.createElement("button");
     del.textContent = "Delete";
-    del.onclick = () => deleteHighlight(h.id);
+    del.onclick = async () => {
+      try {
+        await deleteHighlight(h.id);
+      } catch (err) {
+        console.error("[Web-Jotter] Error deleting highlight:", err);
+      }
+    };
     del.classList.add("tilt-btn");
 
     actions.append(copy, del);
@@ -85,7 +104,8 @@ export async function renderHighlights() {
 
 // Delete a highlight
 async function deleteHighlight(id) {
-  const { highlights = [] } = await storageGet(HL_KEY);
+  const store = await storageGet(HL_KEY);
+  const highlights = Array.isArray(store[HL_KEY]) ? store[HL_KEY] : [];
   const filtered = highlights.filter((h) => h.id !== id);
   await storageSet({ [HL_KEY]: filtered });
   await renderHighlights();

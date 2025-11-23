@@ -32,8 +32,31 @@ async function init(initialTheme) {
   );
 
   // Button Event Listeners for sessions and highlights
-  document.getElementById("saveSessionBtn")?.addEventListener("click", saveSession);
-  document.getElementById("saveHighlightBtn")?.addEventListener("click", saveHighlight);
+  const saveSessionBtn = document.getElementById("saveSessionBtn");
+  if (saveSessionBtn) {
+    saveSessionBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await saveSession();
+      } catch (err) {
+        console.error("[Web-Jotter] Error saving session:", err);
+        alert("Failed to save session. Please try again.");
+      }
+    });
+  }
+
+  const saveHighlightBtn = document.getElementById("saveHighlightBtn");
+  if (saveHighlightBtn) {
+    saveHighlightBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await saveHighlight();
+      } catch (err) {
+        console.error("[Web-Jotter] Error saving highlight:", err);
+        alert("Failed to save highlight. Please try again.");
+      }
+    });
+  }
 
   setupSettingsModal();
   setupThemeCardClicks();

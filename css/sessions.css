@@ -1,4 +1,4 @@
-/* sessions.css */
+/* sessions.css - Session list, items, tabs, and actions */
 
 /* ===========================
    SESSIONS
@@ -10,9 +10,9 @@
   padding: 0;
   display: grid;
   gap: 6px;
-  max-height: 400px;  /* Limit height to prevent overflow */
-  overflow-y: auto;   /* Allow scrolling if content overflows */
-  padding-right: 10px; /* Ensure a little spacing on the right for scrollbars */
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
   border-radius: 8px;
   border: 1px solid var(--color-border-soft);
 }
@@ -23,9 +23,9 @@
   border-radius: 8px;
   border: 1px solid var(--color-border);
   padding: 8px;
-  max-width: 100%;   /* Ensure it does not overflow horizontally */
+  max-width: 100%;
   width: auto;
-  overflow: hidden;  /* Prevent overflow of content */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -44,6 +44,104 @@
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Show ellipsis for long session names */
-  max-width: 85%; /* Limit width for session title */
+  text-overflow: ellipsis;
+  max-width: 85%;
+}
+
+.session-title small {
+  color: var(--color-text-muted);
+}
+
+.session-toggle {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-panel-soft);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Actions Section */
+.session-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+/* Button Styles - Ensure buttons are vertically aligned */
+.session-actions button {
+  width: auto;
+  margin: 2px 0;
+  padding: 8px 20px;
+  text-align: center;
+  background: var(--color-accent);
+  border-radius: 8px;
+  border: 1px solid var(--color-accent);
+  color: #201013;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Adjust for hovering state */
+.session-actions button:hover {
+  filter: brightness(1.1);
+}
+
+/* Tabs inside a session */
+.tab-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.tab-list.is-collapsed {
+  display: none;
+}
+
+/* Keep expanded after actions */
+.session-item.expanded .tab-list {
+  display: grid !important;
+  max-height: none;
+  overflow: visible;
+}
+
+.tab-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.tab-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 6px;
+  max-width: 85%;
+}
+
+.tab-delete {
+  background: transparent;
+  border-radius: 50%;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  width: 18px;
+  height: 18px;
+  font-size: 0.8rem;
+  line-height: 14px;
+  cursor: pointer;
+}
+
+.tab-delete:hover {
+  background: var(--color-accent);
+  color: #201013;
 }

@@ -1,4 +1,4 @@
-/* theme.css */
+/* theme.css - Theme variables, settings modal, and theme-related components */
 
 /* ===========================
    THEME VARS + ANIMATION
@@ -20,8 +20,15 @@
   --color-highlight-bg: #2f2e39;
   --color-blurb-bg: #2a2933;
   --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.55);
+
+  --font-display: 'Bangers', cursive, system-ui;
+  --font-bangers: 'Bangers', system-ui;
+  --font-body: 'Mulish', sans-serif;
+
+  transition: background var(--transition-theme), color var(--transition-theme);
 }
 
+/* Light overrides */
 :root.theme-light {
   --color-bg: #f5f4f8;
   --color-panel: #ffffff;
@@ -52,17 +59,298 @@
   --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.55);
 }
 
-/* Light Mode Theme (overall page light mode) */
-:root.theme-light {
-  --color-bg: #f5f4f8;
-  --color-panel: #ffffff;
-  --color-panel-soft: #f5f4fa;
-  --color-border: #dcd8ee;
-  --color-border-soft: #ccc9dd;
-  --color-text: #222233;
-  --color-text-muted: #555477;
-  --color-highlight-bg: #ffffff;
-  --color-accent-soft: #ffc3d0;
-  --color-blurb-bg: #f0eef9;
-  --shadow-soft: 0 4px 8px rgba(0,0,0,0.18);
+/* ===========================
+   SETTINGS MODAL
+   =========================== */
+
+.settings-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 14, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.settings-modal.is-hidden {
+  display: none !important;
+}
+
+.settings-modal-content {
+  background: var(--color-panel);
+  border-radius: 10px;
+  padding: 16px;
+  width: 92%;
+  max-width: 360px;
+  border: 1px solid var(--color-border-soft);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.settings-modal-title {
+  font-family: var(--font-display);
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  color: var(--color-accent);
+}
+
+/* Sections inside settings */
+.settings-section {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--color-panel-soft);
+  border: 1px solid var(--color-border-soft);
+}
+
+.settings-section-title {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.settings-subtext {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+}
+
+/* Theme cards */
+.theme-card-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.theme-card {
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+/* Fixed Light and Dark Mode Styles */
+.theme-card--dark {
+  background: #24232b !important;
+  color: #f3f3f5 !important;
+  border: 1px solid #3a3944 !important;
+}
+
+.theme-card--dark .theme-card-mascot {
+  filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.65));
+}
+
+.theme-card--dark .theme-card-bubble--dark {
+  background: #11111a;
+  color: #ffcfdf;
+}
+
+.theme-card--light {
+  background: #ffffff !important;
+  color: #222233 !important;
+  border: 1px solid #dcd8ee !important;
+}
+
+.theme-card--light .theme-card-mascot {
+  filter: invert(0.15) hue-rotate(185deg) brightness(1.2) drop-shadow(0 0 6px rgba(255,120,145,0.35));
+}
+
+.theme-card--light .theme-card-bubble--light {
+  background: #ffe4ec;
+  color: #321118;
+}
+
+.theme-card:hover {
+  transform: translateY(-2px) rotate(1deg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.theme-card--active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent-soft);
+}
+
+.theme-card-mascot-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-card-mascot {
+  width: 32px;
+  height: 32px;
+  transition: filter 0.2s ease;
+}
+
+.theme-card-bubble {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-family: var(--font-display);
+}
+
+.theme-card-bubble--dark {
+  background: #11111a;
+  color: #ffcfdf;
+}
+
+.theme-card-bubble--light {
+  background: #ffe4ec;
+  color: #321118;
+}
+
+.theme-card-title {
+  margin: 4px 0 2px;
+  font-weight: 700;
+}
+
+.theme-card-points {
+  margin: 0 0 4px;
+  padding-left: 18px;
+  font-size: 0.78rem;
+}
+
+.theme-card-quip {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+/* Shortcut display */
+.shortcut-list {
+  margin-top: 4px;
+  font-size: 0.8rem;
+}
+
+.shortcut-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.shortcut-label {
+  font-weight: 600;
+}
+
+.shortcut-value {
+  color: var(--color-text-muted);
+}
+
+.shortcuts-hint {
+  margin: 6px 0 2px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* Shortcut links with copy buttons */
+.shortcut-link-block {
+  margin-top: 4px;
+  padding: 6px;
+  background: var(--color-panel);
+  border-radius: 8px;
+  border: 1px solid var(--color-border-soft);
+}
+
+.shortcut-link-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.shortcut-link-label {
+  font-size: 0.78rem;
+  font-family: var(--font-bangers);
+}
+
+.shortcut-copy-btn {
+  background: var(--color-panel);
+  border-radius: 6px;
+  border: 1px solid var(--color-accent);
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  color: #200f10;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.shortcut-copy-btn:hover {
+  transform: translateY(-2px) rotate(1deg);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+.shortcut-link-text {
+  display: block;
+  margin: 2px 0 4px;
+  background: var(--color-panel-soft);
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  border: 1px solid var(--color-border-soft);
+}
+
+/* Danger / Clear Data */
+.danger-section {
+  border-color: #7a2d2d;
+}
+
+.settings-warning {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  color: #ffb8b8;
+}
+
+.settings-label {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+}
+
+.settings-input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 3px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-panel);
+  color: var(--color-text);
+  font-size: 0.8rem;
+}
+
+.danger-btn {
+  width: 100%;
+  margin-top: 6px;
+  background: #c73838;
+  border-color: #c73838;
+  color: #fff;
+}
+
+.danger-divider {
+  border: none;
+  border-top: 1px dashed #7a2d2d;
+  margin: 8px 0 4px;
+}
+
+.danger-btn-soft {
+  width: 100%;
+  background: transparent;
+  color: #ff6b6b;
+  border-color: #c73838;
 }

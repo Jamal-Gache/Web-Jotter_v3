@@ -1,7 +1,22 @@
 // background.js — Web-Jotter v2.0
-import { storageGet, storageSet } from './js/storage.js';
-import { HL_KEY } from './js/highlights.js';
-import { STORAGE_KEY } from './js/sessions.js';
+// Service worker - using inline functions instead of ES modules for compatibility
+
+// Constants
+const HL_KEY = "highlights";
+const STORAGE_KEY = "sessions";
+
+// Storage helper functions (inlined from js/storage.js)
+function storageGet(key) {
+  return new Promise((resolve) =>
+    chrome.storage.local.get(key, (res) => resolve(res))
+  );
+}
+
+function storageSet(obj) {
+  return new Promise((resolve) =>
+    chrome.storage.local.set(obj, () => resolve())
+  );
+}
 
 // Create the right-click "Add to Web Jotter Highlights" option
 chrome.runtime.onInstalled.addListener(() => {

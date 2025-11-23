@@ -1,6 +1,9 @@
-/* header.css */
+/* header.css - Header section, tagline, and mascot styles */
 
-/* Header + Tagline + Mascot */
+/* ===========================
+   HEADER + TAGLINE + MASCOT
+   =========================== */
+
 .header-section {
   background: linear-gradient(135deg, var(--color-panel) 0%, var(--color-panel-soft) 100%);
   padding: 10px 12px 8px;
@@ -21,6 +24,10 @@
   color: var(--color-text-muted);
 }
 
+.center-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
 .tagline-separator {
   margin-top: 6px;
   border: none;
@@ -37,6 +44,12 @@
   cursor: pointer;
 }
 
+.mascot-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .spider-mascot {
   width: 38px;
   height: 38px;
@@ -49,6 +62,37 @@
 
 /* Header spider: always bright, no matter the theme */
 .spider-mascot--header {
+  width: 28px;
+  height: 28px;
   filter: invert(0.15) hue-rotate(185deg) brightness(1.2)
           drop-shadow(0 0 6px rgba(255,120,145,0.45));
+}
+
+/* Compact mascot ring (smaller + cleaner) */
+.spider-mascot-ring {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+/* Dark mode ring */
+:root.theme-dark .spider-mascot-ring {
+  border: 2px solid #ff6f7d;
+  box-shadow: 0 0 4px rgba(255, 110, 120, 0.4);
+}
+
+/* Light mode ring */
+:root.theme-light .spider-mascot-ring {
+  border: 2px solid #7b30ff;
+  box-shadow: 0 0 4px rgba(120, 80, 255, 0.4);
+}
+
+/* Hover animation */
+.spider-mascot-ring:hover {
+  transform: scale(1.07);
 }
